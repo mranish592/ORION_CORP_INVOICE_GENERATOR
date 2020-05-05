@@ -6,12 +6,58 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 from reportlab.lib import colors
 from reportlab.lib.units import inch
+from num2words import num2words
 import pandas as pd
 
-#calculate tax_table
+#calculate tax_table and total amount
+amount=0
+tax_5 = 0
+tax_18 = 0
+total_pieces = 0
+total_amount = 0
+def calculate_table(bill_data):
 
+    #tax_percentage = {6307:0.05,3921:0.18,40159100}
+    global amount
+    global tax_5
+    global tax_18
+    global total_pieces
+    global total_amount
+    for i, row in enumerate(bill_data):
+        if i!= 0:
+            amount = amount +row[7]
+            total_pieces = total_pieces + row[3]
+            if row[6]==5 :
+                tax_5 = tax_5 + 0.05*row[7]
+            elif row[6]==18 :
+                tax_18 = tax_18 + 0.18*row[7]
+
+    total_amount = amount + tax_18 + tax_5
+
+# Python program to convert a list
+# of character
+def convert(s):
+    # initialization of string to ""
+    new = ""
+    # traverse in the string
+    for x in s:
+        new += x
+    # return string
+    return new
 
 #calculate amount in words
+def amount_in_words(n):
+    amount_word = num2words(n, lang='en_IN').title()
+    amount_word = list(amount_word)
+
+    for i, letter in enumerate(amount_word):
+        if amount_word[i] == '-':
+            amount_word[i] = ' '
+        elif amount_word[i] == ',':
+            amount_word[i] = ''
+
+    amount_word_final = 'INR '+convert(amount_word)+' Rupees Only'
+    return amount_word_final
 
 
 #assign data
@@ -26,16 +72,14 @@ company_details = company_name+'\n'+company_address+'\n'+warehouse_address+'\n'+
 
 #retieving data from excel filename
 #fake data
-amount=165000
-tax_5 = 6990
-tax_18 = 4536
-total_amount = amount + tax_18 + tax_5
-total_pieces = 1800
+
+
 
 xl_file = pd.read_excel('/Users/Sanjay/Desktop/OrionCorp/bill_new1.xlsx',0)
 bill_data = xl_file.values.tolist()
 bill_data_head_row = ['SI','Description of Goods','HSN/SAC','Quantity','Rate','per','GST%','Amount']
 bill_data.insert(0,bill_data_head_row)
+calculate_table(bill_data)
 bill_data.append(['','','','','','','',str(amount)])
 bill_data.append(['','IGST 5%','','','','%','',str(tax_5)])
 bill_data.append(['','IGST 18%','','','','%','',str(tax_18)])
@@ -100,7 +144,7 @@ terms_block = 'Terms of Delivery\n*'+terms_of_delivery[0]+'\n*'+terms_of_deliver
 styles = getSampleStyleSheet()
 #buyer_details = Paragraph(buyer_details,styles['Normal'])
 #terms_block = Paragraph(terms_block,styles['Normal'])
-print(buyer_details)
+#print(buyer_details)
 terms_and_buyer_data = [
     [buyer_details,terms_block],
 ]
@@ -141,7 +185,7 @@ bill_table._argW[7]=70
 #amount chargeable table
 amount_chargeable = [
     ['Amount chargeable (inwords)', 'E. &O.E'],
-    ['INR ONE LAKH SEVENTY THOUSAND','']
+    [amount_in_words(total_amount),'']
 ]
 amount_chargeable_table = Table(amount_chargeable)
 amount_chargeable_table_style = TableStyle([
@@ -159,8 +203,9 @@ amount_chargeable_table._argW[1]=70
 tax_data = [
     ['HSN/SAC','Taxable Value', 'Integrated Tax','','Total Tax Amount'],
     ['','', 'Rate','Amount',''],
-    ['6307',50000,5,0.05*50000,0.05*50000],
-    ['3921',50000,5,0.18*50000,0.18*50000],
+    ['6307',tax_5/0.05,5,tax_5,tax_5],
+    ['3921',tax_18/0.18,18,tax_18,tax_18],
+    ['Total',amount,'',tax_18+tax_5,tax_5+tax_18]
 ]
 
 tax_table = Table(tax_data)
@@ -179,9 +224,8 @@ tax_table._argW[3]=80
 tax_table._argW[4]=100
 
 #Amount and declaration table
-tax_words = 'One Lakh Seventy thousand'
 amount_declaration_data =[
-    ['Tax Amount (in words): INR '+tax_words+' only',''],
+    ['Tax Amount (in words): INR '+ amount_in_words(tax_18+tax_5) +' only',''],
     ['Declaration','for Orion Corp'],
     ['We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct', 'Authorised Signatory']
 ]
