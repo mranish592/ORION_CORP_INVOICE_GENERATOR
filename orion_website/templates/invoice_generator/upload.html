@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="jumbotron container">
+      <h1>Upload the Excel File</h1>
+      <form enctype="multipart/form-data" action="{% url 'invoice_generator:upload' %}" method="post">
+        {% csrf_token %}
+        <label for="bill_data"></label>
+        <input type="file" id = "bill_data" name="bill_data">
+
+        <input class='btn btn-primary' type="submit" name="" value="Upload">
+      </form>
+
+      <div class="container">
+        <a class="btn btn-warning" href="{% static 'download.pdf' %}">Preview</a>
+      </div>
+
+    </div>
+
+    <div class="container">
+      <a class="btn btn-success" href= "{% static 'download.pdf' %}" download>Download</a>
+    </div>
+
+    <div class="jumbotron container" >
+      <h1>#Edits to be made in generate_pdf.py</h1>
+      <ol>
+        <li>variable tax</li>
+        <li>Add orginal Address and bank details</li>
+        <li>editable fontSize</li>
+      </ol>
+      <p>* tasks are already started</p>
+    </div>
+
+
+  </body>
+</html>
