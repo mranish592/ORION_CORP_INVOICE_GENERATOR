@@ -124,11 +124,12 @@ def generate(bill_data):
     WAREHOUSE- PLOT NO-239, Giani Compound, Giani Boarder, Opposite Metro Pillar No.160, Behind Giani Gill Transport, Post Ckikamberpur <br/>
     GSTIN/UIN: 09AKGPG4906P1ZQ <br/>
     State Name: Uttar Pradesh, Code: 09 <br/>
+    <b>Bank Details</b><br/>
     Orion Corp<br/>
-    Punjab & Sind Bank A/C no.: 09701100000176 <br/>
-    IFSC Code: PSIB0020970 MICR-110023123 <br/>
+    ICICI BANK LTD A/C no.: 003105037390 <br/>
+    IFSC Code: ICIC0000031 <br/>
     Branch Address <br/>
-    Kasons Tower, Alpha-1 Commercial Belt, First floor, Greater Noida-201306 Phone: 0120-4199100 Fax: 236098</font>''', styles["Normal"])
+    K-1,SENIOR MALL, SECTOR 18, NOIDA, UTTAR PRADESH, PIN CODE : 201301 </font>''', styles["Normal"])
 
 
     #retieving data from excel filename
@@ -154,10 +155,12 @@ def generate(bill_data):
     buyer_address = Paragraph(buyer_address,styles['buyer'],)
 
     buyer_phone_number = bill_data[0][4]
-    buyer_phone_number = 'Phone no.: '+buyer_phone_number
+    buyer_phone_number = 'Phone no.: '+str(buyer_phone_number)
+    buyer_phone_number = Paragraph(buyer_phone_number,styles['buyer'],)
 
     buyer_gst_number = bill_data[0][5]
     buyer_gst_number = 'GST no.: '+buyer_gst_number
+    buyer_gst_number = Paragraph(buyer_gst_number,styles['buyer'],)
 
     bill_date = bill_data[0][6]
     delivery_note = bill_data[0][7]
@@ -170,6 +173,9 @@ def generate(bill_data):
     delivery_note_date = bill_data[2][6]
     despatched_through = bill_data[2][7]
     destination = bill_data[4][0]
+    destination = 'SHIP TO: '+str(destination)
+    destination = Paragraph(destination,styles['buyer'],)
+
     term1 = bill_data[4][1]
     term1 = '*'+ term1
     term1 = Paragraph(term1,styles['buyer'])
@@ -237,17 +243,18 @@ def generate(bill_data):
     #section 1
     fixed_data = [
         [company_details,'Inv No.\n'+str(invoice_number),'Dated\n'+str(bill_date)],
-        ['','Delivery Note\n'+delivery_note,'Mode/Terms of Payment\n'+mode_of_payment],
-        ['','Supplier\'s Ref.\n'+str(supplier_ref),'Other Reference(s)\n'+other_ref],
-        ['','Buyer\'s Order No.\n'+str(buyer_order_number),'Dated\n'+str(buyer_order_date)],
-        ['','Despatch Document No.\n'+str(despatch_document_number),'Delivery Note Date\n'+str(delivery_note_date)],
-        ['','Despatch through\n'+despatched_through,'Destination\n'+destination],
+        ['','Delivery Note\n'+str(delivery_note),'Mode/Terms of Payment\n'+str(mode_of_payment)],
+        ['','Other Reference(s)\n'+str(other_ref),'Buyer\'s Order No.\n'+str(buyer_order_number)],
+        ['','Dated\n'+str(buyer_order_date),'Despatch Document No.\n'+str(despatch_document_number)],
+        ['','Delivery Note Date\n'+str(delivery_note_date),'Despatch through\n'+despatched_through],
+        ['',destination,''],
     ]
 
     style = TableStyle([
         ('GRID',(0,0),(-1,-1),0.5,colors.grey),
         ('SPAN',(0,0),(0,-1)),
         ('VALIGN',(0,0),(-1,-1),'TOP'),
+        ('SPAN',(-2,-1),(-1,-1)),
 
 
     ])
@@ -388,7 +395,7 @@ def generate(bill_data):
 
     #structure layout pdf
     styles.add(ParagraphStyle(name='my_center', alignment=TA_CENTER))
-    styles.add(ParagraphStyle(name='heading', alignment=TA_CENTER, fontSize=16))
+    styles.add(ParagraphStyle(name='heading', alignment=TA_CENTER, fontSize=12))
 
     layout=[]
     layout.append(Spacer(1, 20))
