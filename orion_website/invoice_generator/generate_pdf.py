@@ -159,7 +159,7 @@ def generate(bill_data):
     buyer_phone_number = Paragraph(buyer_phone_number,styles['buyer'],)
 
     buyer_gst_number = bill_data[0][5]
-    buyer_gst_number = 'GST no.: '+buyer_gst_number
+    buyer_gst_number = 'GST/PAN no.: '+buyer_gst_number
     buyer_gst_number = Paragraph(buyer_gst_number,styles['buyer'],)
 
     bill_date = bill_data[0][6]
@@ -245,7 +245,7 @@ def generate(bill_data):
         [company_details,'Inv No.\n'+str(invoice_number),'Dated\n'+str(bill_date)],
         ['','Delivery Note\n'+str(delivery_note),'Mode/Terms of Payment\n'+str(mode_of_payment)],
         ['','Other Reference(s)\n'+str(other_ref),'Buyer\'s Order No.\n'+str(buyer_order_number)],
-        ['','Dated\n'+str(buyer_order_date),'Despatch Document No.\n'+str(despatch_document_number)],
+        ['','Order Date:\n'+str(buyer_order_date),'Despatch Document No.\n'+str(despatch_document_number)],
         ['','Delivery Note Date\n'+str(delivery_note_date),'Despatch through\n'+despatched_through],
         ['',destination,''],
     ]
