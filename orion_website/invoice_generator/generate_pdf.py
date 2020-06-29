@@ -103,8 +103,13 @@ def generate(bill_data):
 
     #calculate amount in words
     def amount_in_words(n):
-        amount_word = num2words(n, lang='en_IN').title()
+        rupee= int(n)
+        paisa= round((n-rupee)*100,0)
+        amount_word = num2words(rupee, lang='en_IN').title()
         amount_word = list(amount_word)
+
+        paisa_word = num2words(paisa, lang='en_IN').title()
+        paisa_word = list(paisa_word)
 
         for i, letter in enumerate(amount_word):
             if amount_word[i] == '-':
@@ -112,7 +117,13 @@ def generate(bill_data):
             elif amount_word[i] == ',':
                 amount_word[i] = ''
 
-        amount_word_final = 'INR '+convert(amount_word)+' Rupees Only'
+        for i, letter in enumerate(paisa_word):
+            if paisa_word[i] == '-':
+                paisa_word[i] = ' '
+            elif paisa_word[i] == ',':
+                paisa_word[i] = ''
+
+        amount_word_final = 'INR '+convert(amount_word)+' Rupees and' + convert(paisa_word)+ 'Paisa Only'
         return amount_word_final
 
 
