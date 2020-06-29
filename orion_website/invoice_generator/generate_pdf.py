@@ -123,7 +123,7 @@ def generate(bill_data):
             elif paisa_word[i] == ',':
                 paisa_word[i] = ''
 
-        amount_word_final = 'INR '+convert(amount_word)+' Rupees and' + convert(paisa_word)+ 'Paisa Only'
+        amount_word_final = 'INR '+convert(amount_word)+' Rupees and ' + convert(paisa_word)+ ' Paisa Only'
         return amount_word_final
 
 
