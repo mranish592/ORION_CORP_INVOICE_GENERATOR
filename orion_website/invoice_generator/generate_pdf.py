@@ -83,6 +83,13 @@ def generate(bill_data):
 
         total_amount = amount + tax_18 + tax_5+ tax_12
 
+        tax_5 = round(tax_5,2)
+        tax_18 = round(tax_18,2)
+        tax_12 = round(tax_12,2)
+        total_amount = round(total_amount,2)
+        amount = round(amount,2)
+
+
     # Python program to convert a list
     # of character
     def convert(s):
@@ -344,12 +351,12 @@ def generate(bill_data):
         ['','', 'Rate','Amount',''],
     ]
     if(flag_5==1):
-        tax_data.append([tax_5_set,tax_5/0.05,5,tax_5,tax_5])
+        tax_data.append([tax_5_set,round(tax_5/0.05,2),5,tax_5,tax_5])
     if(flag_18==1):
-        tax_data.append([tax_18_set,tax_18/0.18,18,tax_18,tax_18],)
+        tax_data.append([tax_18_set,round(tax_18/0.18,2),18,tax_18,tax_18],)
     if(flag_12==1):
-        tax_data.append([tax_12_set,tax_12/0.12,12,tax_12,tax_12])
-    tax_data.append(['Total',amount,'',tax_18+tax_5+tax_12,tax_5+tax_18+tax_12])
+        tax_data.append([tax_12_set,round(tax_12/0.12,2),12,tax_12,tax_12])
+    tax_data.append(['Total',amount,'',round(tax_18+tax_5+tax_12,2),round(tax_5+tax_18+tax_12,2)])
 
     tax_table = Table(tax_data)
     tax_table_style = TableStyle([
