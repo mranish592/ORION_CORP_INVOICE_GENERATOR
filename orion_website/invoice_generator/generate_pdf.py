@@ -206,6 +206,9 @@ def generate(bill_data):
     term3 = '*'+ term3
     term3 = Paragraph(term3,styles['buyer'])
 
+    same_state_status = str(bill_data[4][4])
+    same_state_status = same_state_status.lower()
+
 
     print(bill_data)
 
@@ -225,13 +228,29 @@ def generate(bill_data):
 
     if(tax_5!=0):
         flag_5 = 1
-        bill_data.append(['','IGST 5%','','','','%','',str(tax_5)])
+        if(same_state_status=='yes'):
+            bill_data.append(['','CGST 2.5%','','','','%','',str(tax_5/2)])
+            bill_data.append(['','SGST 2.5%','','','','%','',str(tax_5/2)])
+        else:
+            bill_data.append(['','IGST 5%','','','','%','',str(tax_5)])
+
+
     if(tax_18!=0):
         flag_18 = 1
-        bill_data.append(['','IGST 18%','','','','%','',str(tax_18)])
+        if(same_state_status=='yes'):
+            bill_data.append(['','CGST 9%','','','','%','',str(tax_18/2)])
+            bill_data.append(['','SGST 9%','','','','%','',str(tax_18/2)])
+        else:
+            bill_data.append(['','IGST 18%','','','','%','',str(tax_18)])
+
     if(tax_12!=0):
         flag_12 = 1
-        bill_data.append(['','IGST 12%','','','','%','',str(tax_12)])
+        if(same_state_status=='yes'):
+            bill_data.append(['','CGST 6%','','','','%','',str(tax_12/2)])
+            bill_data.append(['','SGST 6%','','','','%','',str(tax_12/2)])
+        else:
+            bill_data.append(['','IGST 12%','','','','%','',str(tax_12)])
+
     bill_data.append(['','Total','',str(total_pieces),'','%','',str(total_amount)])
     flag = flag_5+flag_18+flag_12
 
@@ -315,20 +334,38 @@ def generate(bill_data):
     #    row[1] = Paragraph(row[1],styles['Normal'])
 
     bill_table = Table(bill_data)
-    bill_table_style = TableStyle([
-        ('GRID',(0,0),(-1,-3-flag),0.5,colors.grey),
-        ('GRID',(0,-1),(-1,-1),0.5,colors.grey),
-        ('BOX',(0,-2-flag),(-1,-1),0.5,colors.grey),
-        ('LINEBEFORE',(-1,-2-flag),(-1,-1),1,colors.grey),
-        ('LINEBEFORE',(-2,-2-flag),(-2,-1),1,colors.grey),
-        ('LINEBEFORE',(-3,-2-flag),(-3,-1),1,colors.grey),
-        ('LINEBEFORE',(-4,-2-flag),(-4,-1),1,colors.grey),
-        ('LINEBEFORE',(-5,-2-flag),(-5,-1),1,colors.grey),
-        ('LINEBEFORE',(-6,-2-flag),(-6,-1),1,colors.grey),
-        ('LINEBEFORE',(-7,-2-flag),(-7,-1),1,colors.grey),
+    if(same_state_status=='yes'):
+        bill_table_style = TableStyle([
+            ('GRID',(0,0),(-1,-3-2*flag),0.5,colors.grey),
+            ('GRID',(0,-1),(-1,-1),0.5,colors.grey),
+            ('BOX',(0,-2-2*flag),(-1,-1),0.5,colors.grey),
+            ('LINEBEFORE',(-1,-2-2*flag),(-1,-1),1,colors.grey),
+            ('LINEBEFORE',(-2,-2-2*flag),(-2,-1),1,colors.grey),
+            ('LINEBEFORE',(-3,-2-2*flag),(-3,-1),1,colors.grey),
+            ('LINEBEFORE',(-4,-2-2*flag),(-4,-1),1,colors.grey),
+            ('LINEBEFORE',(-5,-2-2*flag),(-5,-1),1,colors.grey),
+            ('LINEBEFORE',(-6,-2-2*flag),(-6,-1),1,colors.grey),
+            ('LINEBEFORE',(-7,-2-2*flag),(-7,-1),1,colors.grey),
 
-        ('VALIGN',(0,0),(-1,-1),'TOP'),
-    ])
+            ('VALIGN',(0,0),(-1,-1),'TOP'),
+        ])
+
+    else:
+        bill_table_style = TableStyle([
+            ('GRID',(0,0),(-1,-3-flag),0.5,colors.grey),
+            ('GRID',(0,-1),(-1,-1),0.5,colors.grey),
+            ('BOX',(0,-2-flag),(-1,-1),0.5,colors.grey),
+            ('LINEBEFORE',(-1,-2-flag),(-1,-1),1,colors.grey),
+            ('LINEBEFORE',(-2,-2-flag),(-2,-1),1,colors.grey),
+            ('LINEBEFORE',(-3,-2-flag),(-3,-1),1,colors.grey),
+            ('LINEBEFORE',(-4,-2-flag),(-4,-1),1,colors.grey),
+            ('LINEBEFORE',(-5,-2-flag),(-5,-1),1,colors.grey),
+            ('LINEBEFORE',(-6,-2-flag),(-6,-1),1,colors.grey),
+            ('LINEBEFORE',(-7,-2-flag),(-7,-1),1,colors.grey),
+
+            ('VALIGN',(0,0),(-1,-1),'TOP'),
+        ])
+
     bill_table.setStyle(bill_table_style)
     bill_table._argW[0]=20
     bill_table._argW[1]=210
@@ -356,33 +393,70 @@ def generate(bill_data):
     amount_chargeable_table._argW[0]=470
     amount_chargeable_table._argW[1]=70
 
-    #tax HSN/SAC Table
-    tax_data = [
-        ['HSN/SAC','Taxable Value', 'Integrated Tax','','Total Tax Amount'],
-        ['','', 'Rate','Amount',''],
-    ]
-    if(flag_5==1):
-        tax_data.append([tax_5_set,round(tax_5/0.05,2),5,tax_5,tax_5])
-    if(flag_18==1):
-        tax_data.append([tax_18_set,round(tax_18/0.18,2),18,tax_18,tax_18],)
-    if(flag_12==1):
-        tax_data.append([tax_12_set,round(tax_12/0.12,2),12,tax_12,tax_12])
-    tax_data.append(['Total',amount,'',round(tax_18+tax_5+tax_12,2),round(tax_5+tax_18+tax_12,2)])
+    #tax HSN/SAC Table if same_state_status== yes
+    if(same_state_status=='yes'):
+        tax_data = [
+            ['HSN/SAC','Taxable Value', 'Central Tax','','State Tax','','Total Tax Amount'],
+            ['','', 'Rate','Amount','Rate','Amount',''],
+        ]
+        if(flag_5==1):
+            tax_data.append([tax_5_set,round(tax_5/0.05,2),'2.5%',tax_5/2,'2.5%',tax_5/2,tax_5])
+        if(flag_18==1):
+            tax_data.append([tax_18_set,round(tax_18/0.18,2),'9%',tax_18/2,'9%',tax_18/2,tax_18],)
+        if(flag_12==1):
+            tax_data.append([tax_12_set,round(tax_12/0.12,2),'6%',tax_12/2,'6%',tax_12/2,tax_12])
+        tax_data.append(['Total',amount,'',round((tax_18+tax_5+tax_12)/2,2),'',round((tax_18+tax_5+tax_12)/2,2),round(tax_5+tax_18+tax_12,2)])
 
-    tax_table = Table(tax_data)
-    tax_table_style = TableStyle([
-        ('GRID',(0,0),(-1,-1),0.5,colors.grey),
-        ('VALIGN',(0,0),(-1,-1),'TOP'),
-        ('SPAN',(0,0),(0,1)),
-        ('SPAN',(1,0),(1,1)),
-        ('SPAN',(2,0),(3,0)),
-    ])
-    tax_table.setStyle(tax_table_style)
-    tax_table._argW[0]=240
-    tax_table._argW[1]=80
-    tax_table._argW[2]=40
-    tax_table._argW[3]=80
-    tax_table._argW[4]=100
+        tax_table = Table(tax_data)
+        tax_table_style = TableStyle([
+            ('GRID',(0,0),(-1,-1),0.5,colors.grey),
+            ('VALIGN',(0,0),(-1,-1),'TOP'),
+            ('SPAN',(0,0),(0,1)),
+            ('SPAN',(1,0),(1,1)),
+            ('SPAN',(-1,0),(-1,1)),
+            ('SPAN',(2,0),(3,0)),
+            ('SPAN',(4,0),(5,0)),
+
+        ])
+        tax_table.setStyle(tax_table_style)
+        tax_table._argW[0]=120
+        tax_table._argW[1]=80
+        tax_table._argW[2]=40
+        tax_table._argW[3]=80
+        tax_table._argW[4]=40
+        tax_table._argW[5]=80
+        tax_table._argW[6]=100
+
+    #tax HSN/SAC Table if same_state_status== no
+    else:
+        tax_data = [
+            ['HSN/SAC','Taxable Value', 'Integrated Tax','','Total Tax Amount'],
+            ['','', 'Rate','Amount',''],
+        ]
+        if(flag_5==1):
+            tax_data.append([tax_5_set,round(tax_5/0.05,2),5,tax_5,tax_5])
+        if(flag_18==1):
+            tax_data.append([tax_18_set,round(tax_18/0.18,2),18,tax_18,tax_18],)
+        if(flag_12==1):
+            tax_data.append([tax_12_set,round(tax_12/0.12,2),12,tax_12,tax_12])
+        tax_data.append(['Total',amount,'',round(tax_18+tax_5+tax_12,2),round(tax_5+tax_18+tax_12,2)])
+
+        tax_table = Table(tax_data)
+        tax_table_style = TableStyle([
+            ('GRID',(0,0),(-1,-1),0.5,colors.grey),
+            ('VALIGN',(0,0),(-1,-1),'TOP'),
+            ('SPAN',(0,0),(0,1)),
+            ('SPAN',(1,0),(1,1)),
+            ('SPAN',(2,0),(3,0)),
+            ('SPAN',(-1,0),(-1,1)),
+
+        ])
+        tax_table.setStyle(tax_table_style)
+        tax_table._argW[0]=240
+        tax_table._argW[1]=80
+        tax_table._argW[2]=40
+        tax_table._argW[3]=80
+        tax_table._argW[4]=100
 
     #Amount and declaration table
     amount_declaration_data =[
