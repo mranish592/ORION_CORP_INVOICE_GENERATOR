@@ -9,13 +9,14 @@
   </head>
   <body>
     <div class="jumbotron container">
-      <h1>Upload the Excel File</h1>
+      <h1>Invoice Generator</h1>
+      <h2>Upload the Excel File</h2>
       <h2>Download the sample sheet</h2>
       <div class="container">
-        <a class="btn btn-secondary" href="{% static 'sample.xlsx' %}">Sample Sheet</a>
+        <a class="btn btn-secondary" href="{% static 'invoice_sample.xlsx' %}">Sample Sheet</a>
       </div>
 
-      <form enctype="multipart/form-data" action="{% url 'invoice_generator:upload' %}" method="post">
+      <form enctype="multipart/form-data" action="{% url 'invoice_generator:invoice_upload' %}" method="post">
         {% csrf_token %}
         <label for="bill_data"></label>
         <input type="file" id = "bill_data" name="bill_data">
@@ -24,7 +25,7 @@
       </form>
 
       <div class="container">
-        <a class="btn btn-warning" href="{% static 'download.pdf' %}">Preview</a>
+        <a class="btn btn-warning" href="{% static 'invoice_download.pdf' %}">Preview</a>
       </div>
 
     </div>

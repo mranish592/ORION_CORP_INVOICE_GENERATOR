@@ -10,7 +10,7 @@ from django.templatetags.static import static
 def index(request):
     return render(request, 'invoice_generator/index.html')
 
-def upload(request):
+def invoice_upload(request):
     path = settings.MEDIA_ROOT
 
     if request.method =='POST':
@@ -20,6 +20,6 @@ def upload(request):
         bill_data = xl_file.values.tolist()
 
         generate_pdf.generate(bill_data)
-        return render(request,'invoice_generator/upload.html',context={})
+        return render(request,'invoice_generator/invoice_upload.html',context={})
     else:
-        return render(request,'invoice_generator/upload.html',context={})
+        return render(request,'invoice_generator/invoice_upload.html',context={})

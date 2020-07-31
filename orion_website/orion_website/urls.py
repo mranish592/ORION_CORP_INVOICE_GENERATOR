@@ -21,4 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index, name = 'index'),
     path('invoice_generator/', include('invoice_generator.urls')),
+    path('packing_list/', include('packing_list.urls')),
+
 ]

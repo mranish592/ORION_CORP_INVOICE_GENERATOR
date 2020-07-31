@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="jumbotron container">
+      <h1>Packing List</h1>
+      <h2>Upload the Excel File</h2>
+      <h2>Download the sample sheet</h2>
+      <div class="container">
+        <a class="btn btn-secondary" href="{% static 'packing_sample.xlsx' %}">Sample Sheet</a>
+      </div>
+
+      <form enctype="multipart/form-data" action="{% url 'packing_list:packing_upload' %}" method="post">
+        {% csrf_token %}
+        <label for="packing_list_data"></label>
+        <input type="file" id = "packing_list_data" name="packing_list_data">
+
+        <input class='btn btn-primary' type="submit" name="" value="Upload">
+      </form>
+
+      <div class="container">
+        <a class="btn btn-warning" href="{% static 'packing_download.pdf' %}">Preview</a>
+      </div>
+
+    </div>
+
+    <div class="container">
+      <a class="btn btn-success" href= "{% static 'packing_download.pdf' %}" download>Download</a>
+    </div>
+
+
+
+
+  </body>
+</html>

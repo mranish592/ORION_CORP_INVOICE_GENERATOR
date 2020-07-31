@@ -504,7 +504,7 @@ def generate(bill_data):
 
     #build pdf
 
-    file_name = 'download.pdf'
+    file_name = 'invoice_download.pdf'
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     STATIC_DIR = os.path.join(BASE_DIR,'static')
     file_name = os.path.join(STATIC_DIR,file_name)

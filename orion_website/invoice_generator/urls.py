@@ -23,6 +23,6 @@ app_name = 'invoice_generator'
 
 urlpatterns = [
     path('',views.index,name = 'index'),
-    path('upload',views.upload,name = 'upload'),
+    path('invoice_upload',views.invoice_upload,name = 'invoice_upload'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
