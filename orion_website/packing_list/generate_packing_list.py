@@ -67,7 +67,7 @@ def generate(data):
         fixed_details_table._argW[1]=240
         #fixed_details_table._argW[2]=130
 
-        spaceleft = spaceleft - 6 - address_line - x
+        spaceleft = spaceleft - 10 - address_line - x
         if(spaceleft<2):
             layout.append(PageBreak())
             spaceleft=42
