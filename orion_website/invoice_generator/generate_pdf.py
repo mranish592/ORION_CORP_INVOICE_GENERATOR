@@ -182,6 +182,8 @@ def generate(bill_data):
 
     bill_date = bill_data[0][6]
     delivery_note = bill_data[0][7]
+    delivery_note ='Delivery Note\n'+str(delivery_note)
+    delivery_note = Paragraph(delivery_note,styles['buyer'])
     mode_of_payment = bill_data[2][0]
     supplier_ref = bill_data[2][1]
     other_ref = bill_data[2][2]
