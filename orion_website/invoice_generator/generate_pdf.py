@@ -282,7 +282,7 @@ def generate(bill_data):
     #section 1
     fixed_data = [
         [company_details,'Inv No.\n'+str(invoice_number),'Dated\n'+str(bill_date)],
-        ['','Delivery Note\n'+str(delivery_note),'Mode/Terms of Payment\n'+str(mode_of_payment)],
+        ['',delivery_note,'Mode/Terms of Payment\n'+str(mode_of_payment)],
         ['','Other Reference(s)\n'+str(other_ref),'Buyer\'s Order No.\n'+str(buyer_order_number)],
         ['','Order Date:\n'+str(buyer_order_date),'Despatch Document No.\n'+str(despatch_document_number)],
         ['','Delivery Note Date\n'+str(delivery_note_date),'Despatch through\n'+despatched_through],
