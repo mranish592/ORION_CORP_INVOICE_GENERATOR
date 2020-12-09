@@ -35,7 +35,7 @@ def generate(bill_data):
     import time
     import os
     from datetime import date
-    from reportlab.platypus import tables, SimpleDocTemplate,Table,Paragraph,Spacer,TableStyle
+    from reportlab.platypus import tables, SimpleDocTemplate,Table,Paragraph,Spacer,TableStyle, Image
     from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
     from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
     from reportlab.lib import colors
@@ -461,13 +461,18 @@ def generate(bill_data):
         tax_table._argW[4]=100
 
     #Amount and declaration table
+    image_name = 'images/sign.jpg'
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    STATIC_DIR = os.path.join(BASE_DIR,'static')
+    image_name = os.path.join(STATIC_DIR,image_name)
     amount_declaration_data =[
         ['Tax Amount (in words):'+ amount_in_words(tax_18+tax_5+tax_12) +' only',''],
-        ['Declaration','for Orion Corp'],
-        ['We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct', 'Authorised Signatory']
+        ['Declaration','for Orion the Corp'],
+        ['MSME Number: UDYAM-UP-29-0008397\nGeM Seller ID: C0FB200001154517',Image(image_name, width = 100, height  = 100*0.60)],
+        ['We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.', 'Authorised Signatory']
     ]
     styles = getSampleStyleSheet()
-    amount_declaration_data[2][0] = Paragraph(amount_declaration_data[2][0],styles['Normal'])
+    amount_declaration_data[3][0] = Paragraph(amount_declaration_data[3][0],styles['Normal'])
 
     amount_declaration_table = Table(amount_declaration_data)
     amount_declaration_style = TableStyle([
@@ -475,15 +480,13 @@ def generate(bill_data):
         ('BOX',(1,1),(1,-1),0.5,colors.grey),
         ('BOX',(0,1),(-1,-1),0.5,colors.grey),
         ('VALIGN',(0,0),(1,1),'TOP'),
-        ('VALIGN',(0,2),(0,2),'TOP'),
-
         ('ALIGN',(1,1),(1,-1),'RIGHT'),
         ('SPAN',(0,0),(1,0)),
     ])
     amount_declaration_table.setStyle(amount_declaration_style)
     amount_declaration_table._argW[0]=280
     amount_declaration_table._argW[1]=260
-    amount_declaration_table._argH[2]=50
+    
     amount_declaration_table._argH[0]=20
 
 
