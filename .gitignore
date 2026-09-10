@@ -4,3 +4,10 @@ node_modules/
 .DS_Store
 *.log
 .env*.local
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Local PDFs from `npm run render:samples`
+out/
